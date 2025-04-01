@@ -12,6 +12,7 @@ struct Lists: Identifiable {
     var id = UUID()
     var name: String
     var listItems: [ListItem]
+    var dueDate: Date?
     
     func getMockData() -> [ListItem] {
         return [ListItem(description: "Whole milk", completed: false),
