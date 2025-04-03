@@ -7,10 +7,12 @@
 
 import SwiftUI
 
+
 struct ListScreen: View {
     
     @Binding var list: Lists
     @FocusState var isFocused: Bool
+    @State var selectedSort: StatusSort = .all
     
     var body: some View {
         NavigationStack {
@@ -25,18 +27,52 @@ struct ListScreen: View {
                         .fill(.tasklystAccent)
                         .frame(width: 300, height: 1)
                         .padding(.bottom, 10)
+                    HStack {
+                        Spacer()
+                        Menu {
+                            Picker("", selection: $selectedSort) {
+                                ForEach(StatusSort.allCases) { sortOption in
+                                    Text(sortOption.label)
+                                }
+                            }
+                        } label: {
+                            HStack (spacing: 5) {
+                                Text(selectedSort.label)
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(Color.tasklystAccent)
+                                Image(systemName: "arrow.up.and.down")
+                                    .foregroundStyle(Color.tasklystAccent)
+                            }
+                        }
+                    }
+                    .padding(.trailing, 10)
                     VStack (alignment: .leading) {
                         List($list.listItems, id: \.id, editActions: .delete) { $list in
-                            ListItemView(item: $list)
-                                .listRowBackground(Color.clear)
-                                .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                            switch selectedSort {
+                            case .all:
+                                ListItemView(item: $list)
+                                    .listRowBackground(Color.clear)
+                                    .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                            case .incomplete:
+                                if !list.completed {
+                                    ListItemView(item: $list)
+                                        .listRowBackground(Color.clear)
+                                        .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                                }
+                            case .completed:
+                                if list.completed {
+                                    ListItemView(item: $list)
+                                        .listRowBackground(Color.clear)
+                                        .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                                }
+                            }
                         }
                         .listStyle(.plain)
                     }
                     .frame(width: 350, alignment: .leading)
                     Spacer()
                     Button {
-                        list.listItems.append(ListItem(listDescription: "New List Item", completed: false))
+                        list.listItems.append(ListItem(itemDescription: "", completed: false))
                     } label: {
                         Image(systemName: "plus.circle")
                             .foregroundStyle(.tasklystAccent)
@@ -45,12 +81,20 @@ struct ListScreen: View {
                     .padding(.top)
                 }
             }
+            .toolbar {
+                ToolbarItemGroup(placement: .keyboard) {
+                    Spacer()
+                    Button("Done") {
+                        hideKeyboard()
+                    }
+                }
+            }
         }
     }
 }
 
 #Preview {
-    ListScreen(list: .constant(Lists(name: "Grocery Shopping List", listItems: [ListItem(listDescription: "Whole Milk", completed: false),ListItem(listDescription: "Loaf of Bread", completed: false),ListItem(listDescription: "Ketchup Bottle", completed: false)])))
+    ListScreen(list: .constant(Lists(name: "Grocery Shopping List", listItems: [ListItem(itemDescription: "Whole Milk", completed: false),ListItem(itemDescription: "Loaf of Bread", completed: false),ListItem(itemDescription: "Ketchup Bottle", completed: false)])))
 }
 
 struct ListItemView: View {
@@ -60,26 +104,33 @@ struct ListItemView: View {
     
     var body: some View {
         HStack {
-            TextEditor(text: $item.listDescription)
+            TextEditor(text: $item.itemDescription)
+                .foregroundStyle(item.completed ? Color.tasklystForeground.opacity(0.3) : Color.tasklystForeground)
                 .font(.system(size: 14))
                 .focused($isFocused)
-                .onSubmit {
-                    isFocused.toggle()
-                }
+                
             Spacer()
             Button {
-                item.completed.toggle()
+                withAnimation(.easeOut) {
+                    item.completed.toggle()
+                }
             } label: {
                 ZStack {
                     Circle()
-                        .stroke(.tasklystForeground, lineWidth: 2)
+                        .stroke(item.completed ? .tasklystForeground.opacity(0.3) : .tasklystForeground, lineWidth: 2)
                         .frame(width: 18, height: 18)
                         .padding(.trailing, 5)
                     item.completed ?
                     Image(systemName: "checkmark")
-                        .offset(x: -2, y: -3) :
+                        .offset(x: -2, y: -3)
+                        .foregroundStyle(.green) :
                     nil
                 }
+            }
+        }
+        .onAppear {
+            if item.itemDescription.isEmpty {
+                isFocused = true
             }
         }
     }

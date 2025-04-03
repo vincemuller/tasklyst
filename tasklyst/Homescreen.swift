@@ -7,7 +7,9 @@
 
 import SwiftUI
 
+
 struct HomeScreen: View {
+    @Environment(\.presentationMode) var presentationMode
     
     @State private var searchTerms: String = ""
     @State private var lists: [Lists] = [Lists(name: "Weekly Grocery List", listItems: []),
@@ -122,6 +124,7 @@ struct HomeScreen: View {
                         Spacer()
                         Button {
                             createNewList()
+                            presentationMode.wrappedValue.dismiss()
                         } label: {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 8)

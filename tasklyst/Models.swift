@@ -15,19 +15,19 @@ struct Lists: Identifiable {
     var dueDate: Date?
     
     func getMockData() -> [ListItem] {
-        return [ListItem(listDescription: "Whole milk", completed: false),
-                ListItem(listDescription: "Loaf of bread", completed: false),
-                ListItem(listDescription: "Yogurt", completed: false),
-                ListItem(listDescription: "Breakfast sausage", completed: false),
-                ListItem(listDescription: "Raspberries", completed: false),
-                ListItem(listDescription: "Strawberries", completed: false),
-                ListItem(listDescription: "Blueberries", completed: false)]
+        return [ListItem(itemDescription: "Whole milk", completed: false),
+                ListItem(itemDescription: "Loaf of bread", completed: false),
+                ListItem(itemDescription: "Yogurt", completed: false),
+                ListItem(itemDescription: "Breakfast sausage", completed: false),
+                ListItem(itemDescription: "Raspberries", completed: false),
+                ListItem(itemDescription: "Strawberries", completed: false),
+                ListItem(itemDescription: "Blueberries", completed: false)]
     }
     
 }
 
 struct ListItem: Identifiable {
     var id = UUID()
-    var listDescription: String
+    var itemDescription: String
     var completed: Bool
 }
