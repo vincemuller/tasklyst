@@ -14,7 +14,6 @@ struct HomeScreen: View {
                                          Lists(name: "Disney Vacation Prep", listItems: []),
                                          Lists(name: "Weekend To Do's", listItems: []),
                                          Lists(name: "House Cleaning", listItems: []),]
-    
     @State private var createListSheetIsPresenting: Bool = false
     @State private var newListName: String = ""
     @State private var enableDueDate: Bool = false
@@ -38,7 +37,7 @@ struct HomeScreen: View {
                             .stroke(.tasklystAccent)
                         HStack {
                             Image(systemName: "magnifyingglass")
-                                .foregroundStyle(.black.opacity(0.5))
+                                .foregroundStyle(Color.tasklystForeground.opacity(0.5))
                             TextField("Search lists", text: $searchTerms)
                             Spacer()
                         }
@@ -54,15 +53,16 @@ struct HomeScreen: View {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(.tasklystSecondary)
                             .stroke(.tasklystAccent)
-                        List(lists) { list in
-                            NavigationLink(destination: Text(list.name)) {
+                        List ($lists, id: \.id, editActions: .delete) { $list in
+                                list.name.lowercased().contains(searchTerms.lowercased()) != true && !searchTerms.isEmpty ? nil :
+                            NavigationLink(destination: ListScreen(list: $list)) {
                                 HStack {
                                     Image(systemName: "list.bullet.circle")
                                         .foregroundStyle(.tasklystAccent)
                                     Text(list.name)
                                         .font(.system(size: 14))
                                     Spacer()
-                                    Text(list.getMockData().count.description)
+                                    Text(list.listItems.count.description)
                                         .font(.system(size: 14))
                                 }
                             }
@@ -140,6 +140,7 @@ struct HomeScreen: View {
             .padding()
             .presentationDetents([.height(300)])
             .presentationDragIndicator(.automatic)
+
         }
     }
     
