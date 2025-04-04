@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EB4ACA592D9F13510031D35E /* ListEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4ACA562D9F13510031D35E /* ListEntity+CoreDataProperties.swift */; };
+		EB4ACA5A2D9F13510031D35E /* ListEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4ACA552D9F13510031D35E /* ListEntity+CoreDataClass.swift */; };
+		EB4ACA632D9F91F70031D35E /* ListItemEntity+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4ACA612D9F91F70031D35E /* ListItemEntity+CoreDataClass.swift */; };
+		EB4ACA642D9F91F70031D35E /* ListItemEntity+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB4ACA622D9F91F70031D35E /* ListItemEntity+CoreDataProperties.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		EB1FD29B2D9B26970045586C /* tasklyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasklyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB4ACA552D9F13510031D35E /* ListEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EB4ACA562D9F13510031D35E /* ListEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		EB4ACA612D9F91F70031D35E /* ListItemEntity+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemEntity+CoreDataClass.swift"; sourceTree = "<group>"; };
+		EB4ACA622D9F91F70031D35E /* ListItemEntity+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ListItemEntity+CoreDataProperties.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -32,6 +43,10 @@
 		EB1FD2922D9B26970045586C = {
 			isa = PBXGroup;
 			children = (
+				EB4ACA612D9F91F70031D35E /* ListItemEntity+CoreDataClass.swift */,
+				EB4ACA622D9F91F70031D35E /* ListItemEntity+CoreDataProperties.swift */,
+				EB4ACA552D9F13510031D35E /* ListEntity+CoreDataClass.swift */,
+				EB4ACA562D9F13510031D35E /* ListEntity+CoreDataProperties.swift */,
 				EB1FD29D2D9B26970045586C /* tasklyst */,
 				EB1FD29C2D9B26970045586C /* Products */,
 			);
@@ -121,6 +136,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4ACA632D9F91F70031D35E /* ListItemEntity+CoreDataClass.swift in Sources */,
+				EB4ACA642D9F91F70031D35E /* ListItemEntity+CoreDataProperties.swift in Sources */,
+				EB4ACA592D9F13510031D35E /* ListEntity+CoreDataProperties.swift in Sources */,
+				EB4ACA5A2D9F13510031D35E /* ListEntity+CoreDataClass.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

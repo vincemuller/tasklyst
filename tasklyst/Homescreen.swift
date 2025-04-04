@@ -6,16 +6,23 @@
 //
 
 import SwiftUI
+import CoreData
 
 
 struct HomeScreen: View {
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.managedObjectContext) private var viewContext
+    
+    @FetchRequest(
+            sortDescriptors: [NSSortDescriptor(keyPath: \ListEntity.name, ascending: true)]
+        ) var toDoLists: FetchedResults<ListEntity>
+    
+    @FetchRequest(
+        sortDescriptors: []
+        ) var listItems: FetchedResults<ListItemEntity>
     
     @State private var searchTerms: String = ""
-    @State private var lists: [Lists] = [Lists(name: "Weekly Grocery List", listItems: []),
-                                         Lists(name: "Disney Vacation Prep", listItems: []),
-                                         Lists(name: "Weekend To Do's", listItems: []),
-                                         Lists(name: "House Cleaning", listItems: []),]
+    @State private var lists: [ListModel] = []
     @State private var createListSheetIsPresenting: Bool = false
     @State private var newListName: String = ""
     @State private var enableDueDate: Bool = false
@@ -55,21 +62,26 @@ struct HomeScreen: View {
                         RoundedRectangle(cornerRadius: 15)
                             .fill(.tasklystSecondary)
                             .stroke(.tasklystAccent)
-                        List ($lists, id: \.id, editActions: .delete) { $list in
-                                list.name.lowercased().contains(searchTerms.lowercased()) != true && !searchTerms.isEmpty ? nil :
-                            NavigationLink(destination: ListScreen(list: $list)) {
-                                HStack {
-                                    Image(systemName: "list.bullet.circle")
-                                        .foregroundStyle(.tasklystAccent)
-                                    Text(list.name)
-                                        .font(.system(size: 14))
-                                    Spacer()
-                                    Text(list.listItems.count.description)
-                                        .font(.system(size: 14))
+                        List {
+                            ForEach(toDoLists.sorted { ($0.created ?? .distantPast) < ($1.created ?? .distantPast) }, id: \.self) { list in
+                                
+                                list.name?.lowercased().contains(searchTerms.lowercased()) != true && !searchTerms.isEmpty ? nil :
+                                
+                                NavigationLink(destination: ListScreen(list: list)) {
+                                    HStack {
+                                        Image(systemName: "list.bullet.circle")
+                                            .foregroundStyle(.tasklystAccent)
+                                        Text(list.name ?? "")
+                                            .font(.system(size: 14))
+                                        Spacer()
+                                        Text(listItems.filter {$0.list?.id == list.id}.count.description)
+                                            .font(.system(size: 14))
+                                    }
                                 }
+                                .listRowBackground(Color.clear)
+                                .listRowInsets(.init(top: 5, leading: 15, bottom: 5, trailing: 15))
                             }
-                            .listRowBackground(Color.clear)
-                            .listRowInsets(.init(top: 5, leading: 15, bottom: 5, trailing: 15))
+                            .onDelete(perform: delete)
                         }
                         .listStyle(.plain)
                     }
@@ -143,20 +155,35 @@ struct HomeScreen: View {
             .padding()
             .presentationDetents([.height(300)])
             .presentationDragIndicator(.automatic)
-
+        }
+        .onAppear {
+            print(listItems.count)
         }
     }
     
     private func createNewList() {
         enableDueDate ?
-        lists.append(Lists(name: newListName, listItems: [], dueDate: newListDueDate)) :
-        lists.append(Lists(name: newListName, listItems: []))
+        ListEntity.create(in: viewContext, name: newListName, dueDate: newListDueDate) :
+        ListEntity.create(in: viewContext, name: newListName)
         
         createListSheetIsPresenting = false
         newListName = ""
         enableDueDate = false
         newListDueDate = Date.now.addingTimeInterval(0)
     }
+    
+    private func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let list = toDoLists[index]
+            viewContext.delete(list)
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error deleting list: \(error.localizedDescription)")
+        }
+    }
+    
 }
 
 

@@ -8,25 +8,25 @@
 import Foundation
 
 
-struct Lists: Identifiable {
+struct ListModel: Identifiable {
     var id = UUID()
     var name: String
-    var listItems: [ListItem]
+    var listItems: [ListItemModel]
     var dueDate: Date?
     
-    func getMockData() -> [ListItem] {
-        return [ListItem(itemDescription: "Whole milk", completed: false),
-                ListItem(itemDescription: "Loaf of bread", completed: false),
-                ListItem(itemDescription: "Yogurt", completed: false),
-                ListItem(itemDescription: "Breakfast sausage", completed: false),
-                ListItem(itemDescription: "Raspberries", completed: false),
-                ListItem(itemDescription: "Strawberries", completed: false),
-                ListItem(itemDescription: "Blueberries", completed: false)]
+    func getMockData() -> [ListItemModel] {
+        return [ListItemModel(itemDescription: "Whole milk", completed: false),
+                ListItemModel(itemDescription: "Loaf of bread", completed: false),
+                ListItemModel(itemDescription: "Yogurt", completed: false),
+                ListItemModel(itemDescription: "Breakfast sausage", completed: false),
+                ListItemModel(itemDescription: "Raspberries", completed: false),
+                ListItemModel(itemDescription: "Strawberries", completed: false),
+                ListItemModel(itemDescription: "Blueberries", completed: false)]
     }
     
 }
 
-struct ListItem: Identifiable {
+struct ListItemModel: Identifiable {
     var id = UUID()
     var itemDescription: String
     var completed: Bool

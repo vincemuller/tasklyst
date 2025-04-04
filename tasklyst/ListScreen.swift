@@ -9,8 +9,11 @@ import SwiftUI
 
 
 struct ListScreen: View {
+    @Environment(\.managedObjectContext) private var viewContext
     
-    @Binding var list: Lists
+    @ObservedObject var list: ListEntity
+    
+    
     @FocusState var isFocused: Bool
     @State var selectedSort: StatusSort = .all
     
@@ -20,7 +23,7 @@ struct ListScreen: View {
                 Color.tasklystBackground
                     .ignoresSafeArea()
                 VStack {
-                    Text(list.name)
+                    Text(list.name ?? "")
                         .font(.system(.title3, design: .monospaced, weight: .semibold))
                         .foregroundStyle(.tasklystAccent)
                     Rectangle()
@@ -47,23 +50,25 @@ struct ListScreen: View {
                     }
                     .padding(.trailing, 10)
                     VStack (alignment: .leading) {
-                        List($list.listItems, id: \.id, editActions: .delete) { $list in
-                            switch selectedSort {
-                            case .all:
-                                ListItemView(item: $list)
-                                    .listRowBackground(Color.clear)
-                                    .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
-                            case .incomplete:
-                                if !list.completed {
-                                    ListItemView(item: $list)
+                        List {
+                            ForEach(list.listItemsArray.filter{$0.list?.id == list.id}, id: \.self) {item in
+                                switch selectedSort {
+                                case .all:
+                                    ListItemView(item: item)
                                         .listRowBackground(Color.clear)
                                         .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
-                                }
-                            case .completed:
-                                if list.completed {
-                                    ListItemView(item: $list)
-                                        .listRowBackground(Color.clear)
-                                        .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                                case .incomplete:
+                                    if !item.completed {
+                                        ListItemView(item: item)
+                                            .listRowBackground(Color.clear)
+                                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                                    }
+                                case .completed:
+                                    if item.completed {
+                                        ListItemView(item: item)
+                                            .listRowBackground(Color.clear)
+                                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
+                                    }
                                 }
                             }
                         }
@@ -72,7 +77,7 @@ struct ListScreen: View {
                     .frame(width: 350, alignment: .leading)
                     Spacer()
                     Button {
-                        list.listItems.append(ListItem(itemDescription: "", completed: false))
+                        createNewListItem()
                     } label: {
                         Image(systemName: "plus.circle")
                             .foregroundStyle(.tasklystAccent)
@@ -90,21 +95,36 @@ struct ListScreen: View {
                 }
             }
         }
+        .onDisappear {
+            do {
+                try viewContext.save()
+            } catch {
+                print("Failed to save: \(error.localizedDescription)")
+            }
+        }
     }
+    
+    private func createNewListItem() {
+        ListItemEntity.create(in: viewContext, description: "", completed: false, list: list)
+    }
+    
 }
 
 #Preview {
-    ListScreen(list: .constant(Lists(name: "Grocery Shopping List", listItems: [ListItem(itemDescription: "Whole Milk", completed: false),ListItem(itemDescription: "Loaf of Bread", completed: false),ListItem(itemDescription: "Ketchup Bottle", completed: false)])))
+    ListScreen(list: ListEntity())
 }
 
 struct ListItemView: View {
     
-    @Binding var item: ListItem
+    @ObservedObject var item: ListItemEntity
     @FocusState var isFocused: Bool
     
     var body: some View {
         HStack {
-            TextEditor(text: $item.itemDescription)
+            TextEditor(text: Binding(
+                get: { item.itemDescription ?? "" },
+                set: { newValue in item.itemDescription = newValue }
+            ))
                 .foregroundStyle(item.completed ? Color.tasklystForeground.opacity(0.3) : Color.tasklystForeground)
                 .font(.system(size: 14))
                 .focused($isFocused)
@@ -129,7 +149,7 @@ struct ListItemView: View {
             }
         }
         .onAppear {
-            if item.itemDescription.isEmpty {
+            if (item.itemDescription == "") {
                 isFocused = true
             }
         }
