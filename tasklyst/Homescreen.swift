@@ -22,7 +22,6 @@ struct HomeScreen: View {
         ) var listItems: FetchedResults<ListItemEntity>
     
     @State private var searchTerms: String = ""
-    @State private var lists: [ListModel] = []
     @State private var createListSheetIsPresenting: Bool = false
     @State private var newListName: String = ""
     @State private var enableDueDate: Bool = false

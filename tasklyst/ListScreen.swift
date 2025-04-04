@@ -13,25 +13,77 @@ struct ListScreen: View {
     
     @ObservedObject var list: ListEntity
     
-    
     @FocusState var isFocused: Bool
     @State var selectedSort: StatusSort = .all
+    @State var showDatePicker: Bool = false
     
     var body: some View {
         NavigationStack {
             ZStack {
                 Color.tasklystBackground
                     .ignoresSafeArea()
+                    .toolbar(content: {
+                        if let dueDate = list.dueDate {
+                            Button {
+                                showDatePicker.toggle()
+                            } label: {
+                                Text(dueDate, style: .date) // Display date in a compact format
+                                    .font(.system(size: 12)) // Match the Menu text size
+                                    .foregroundStyle(Color.tasklystAccent)
+                            }
+                            .popover(isPresented: $showDatePicker, attachmentAnchor: .point(.trailing)) {
+                                VStack (spacing: 0) {
+                                    HStack {
+                                        Spacer()
+                                        Button("Remove Date") {
+                                            list.dueDate = nil
+                                            showDatePicker = false
+                                        }
+                                        .foregroundColor(.red)
+                                        .padding(.trailing, 15)
+                                        .padding(.top, 25)
+                                    }
+                                    DatePicker(
+                                        "Select Date",
+                                        selection: Binding(
+                                            get: { list.dueDate ?? Date() },
+                                            set: { newDate in list.dueDate = newDate }
+                                        ),
+                                        displayedComponents: .date
+                                    )
+                                    .datePickerStyle(.graphical) // Optional: Use a graphical calendar
+                                    .padding()
+                                }
+                                .presentationDetents([.height(400)])
+                                .presentationDragIndicator(.automatic)
+                            }
+                        } else {
+                            Button {
+                                list.dueDate = Date()
+                                showDatePicker.toggle()
+                            } label: {
+                                Text("Add Due Date")
+                                    .font(.system(size: 12))
+                                    .foregroundStyle(Color.tasklystAccent)
+                            }
+                        }
+                    })
                 VStack {
-                    Text(list.name ?? "")
+                    TextEditor(text: Binding(
+                        get: { list.name ?? "" },
+                        set: { newValue in list.name = newValue }
+                    ))
                         .font(.system(.title3, design: .monospaced, weight: .semibold))
                         .foregroundStyle(.tasklystAccent)
+                        .multilineTextAlignment(.center)
+                        .frame(height: 35)
                     Rectangle()
                         .fill(.tasklystAccent)
                         .frame(width: 300, height: 1)
                         .padding(.bottom, 10)
                     HStack {
                         Spacer()
+                        
                         Menu {
                             Picker("", selection: $selectedSort) {
                                 ForEach(StatusSort.allCases) { sortOption in
@@ -39,7 +91,7 @@ struct ListScreen: View {
                                 }
                             }
                         } label: {
-                            HStack (spacing: 5) {
+                            HStack(spacing: 5) {
                                 Text(selectedSort.label)
                                     .font(.system(size: 12))
                                     .foregroundStyle(Color.tasklystAccent)
@@ -48,7 +100,7 @@ struct ListScreen: View {
                             }
                         }
                     }
-                    .padding(.trailing, 10)
+                    .padding(.horizontal, 10)
                     VStack (alignment: .leading) {
                         List {
                             ForEach(list.listItemsArray.filter{$0.list?.id == list.id}, id: \.self) {item in
@@ -71,6 +123,7 @@ struct ListScreen: View {
                                     }
                                 }
                             }
+                            .onDelete(perform: delete)
                         }
                         .listStyle(.plain)
                     }
@@ -95,6 +148,7 @@ struct ListScreen: View {
                 }
             }
         }
+
         .onDisappear {
             do {
                 try viewContext.save()
@@ -106,6 +160,18 @@ struct ListScreen: View {
     
     private func createNewListItem() {
         ListItemEntity.create(in: viewContext, description: "", completed: false, list: list)
+    }
+    
+    private func delete(at offsets: IndexSet) {
+        for index in offsets {
+            let listItem = list.listItemsArray[index]
+            viewContext.delete(listItem)
+        }
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error deleting list: \(error.localizedDescription)")
+        }
     }
     
 }
