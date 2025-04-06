@@ -34,5 +34,3 @@ struct TLSearchBarView: View {
 #Preview {
     TLSearchBarView(searchTerms: .constant(""), contentWidth: 393, contentHeight: 750)
 }
-
-//SearchBarView(searchTerms: $searchTerms)

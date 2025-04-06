@@ -19,69 +19,17 @@ struct ListScreen: View {
     
     var body: some View {
         NavigationStack {
-            ZStack {
-                Color.tasklystBackground
-                    .ignoresSafeArea()
-                VStack {
-                    TextEditor(text: Binding(
-                        get: { list.name ?? "" },
-                        set: { newValue in list.name = newValue }
-                    ))
-                        .font(.system(.title3, design: .monospaced, weight: .semibold))
-                        .foregroundStyle(.tasklystAccent)
-                        .multilineTextAlignment(.center)
-                        .frame(height: 35)
-                    Rectangle()
-                        .fill(.tasklystAccent)
-                        .frame(width: 300, height: 1)
-                        .padding(.bottom, 10)
-                    HStack {
+            GeometryReader { geometryReader in
+                ZStack {
+                    Color.tasklystBackground
+                        .ignoresSafeArea()
+                    VStack {
+                        TLListscreenHeaderView(list: list, contentWidth: geometryReader.size.width)
+                        TLListItemSortView(selectedSort: $selectedSort)
+                        TLListItemSectionView(list: list, selectedSort: $selectedSort, deleteAction: delete(at:))
                         Spacer()
-                        
-                        Menu {
-                            Picker("", selection: $selectedSort) {
-                                ForEach(StatusSort.allCases) { sortOption in
-                                    Text(sortOption.label)
-                                }
-                            }
-                        } label: {
-                            HStack(spacing: 5) {
-                                TLTextView(text: selectedSort.label)
-                                Image(systemName: "arrow.up.and.down")
-                                    .foregroundStyle(Color.tasklystAccent)
-                            }
-                        }
+                        TLPlusCircleView(createFunction: create)
                     }
-                    .padding(.horizontal, 10)
-                    VStack (alignment: .leading) {
-                        List {
-                            ForEach(list.listItemsArray.filter{$0.list?.id == list.id}, id: \.self) {item in
-                                switch selectedSort {
-                                case .all:
-                                    TLListItemView(item: item)
-                                        .listRowBackground(Color.clear)
-                                        .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
-                                case .incomplete:
-                                    if !item.completed {
-                                        TLListItemView(item: item)
-                                            .listRowBackground(Color.clear)
-                                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
-                                    }
-                                case .completed:
-                                    if item.completed {
-                                        TLListItemView(item: item)
-                                            .listRowBackground(Color.clear)
-                                            .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
-                                    }
-                                }
-                            }
-                            .onDelete(perform: delete)
-                        }
-                        .listStyle(.plain)
-                    }
-                    .frame(width: 350, alignment: .leading)
-                    Spacer()
-                    TLPlusCircleView(createFunction: create)
                 }
             }
             .toolbar {

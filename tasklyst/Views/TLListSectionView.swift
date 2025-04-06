@@ -24,17 +24,7 @@ struct TLListSectionView: View {
                 .stroke(.tasklystAccent)
             List {
                 ForEach(filteredLists(), id: \.self) { list in
-                    NavigationLink(destination: ListScreen(list: list)) {
-                        HStack {
-                            Image(systemName: "list.bullet.circle")
-                                .foregroundStyle(.tasklystAccent)
-                            TLTextView(text: list.name ?? "", color: Color.tasklystForeground, size: 14)
-                            Spacer()
-                            TLTextView(text: list.listItemsArray.count.description, color: Color.tasklystForeground, size: 14)
-                        }
-                    }
-                    .listRowBackground(Color.clear)
-                    .listRowInsets(.init(top: 5, leading: 15, bottom: 5, trailing: 15))
+                    TLListRowView(list: list)
                 }
                 .onDelete(perform: deleteAction)
             }
@@ -64,13 +54,22 @@ struct TLListSectionView: View {
         }
     }
 }
-//
-//#Preview {
-//    TLListSectionView(toDoLists: [])
-//}
 
-//ListSectionView(
-//    toDoLists: filteredLists(),
-//    listItems: listItems,
-//    deleteAction: delete
-//)
+
+struct TLListRowView: View {
+    @ObservedObject var list: ListEntity
+    
+    var body: some View {
+        NavigationLink(destination: ListScreen(list: list)) {
+            HStack {
+                Image(systemName: "list.bullet.circle")
+                    .foregroundStyle(.tasklystAccent)
+                TLTextView(text: list.name ?? "", color: Color.tasklystForeground, size: 14)
+                Spacer()
+                TLTextView(text: list.listItemsArray.count.description, color: Color.tasklystForeground, size: 14)
+            }
+        }
+        .listRowBackground(Color.clear)
+        .listRowInsets(.init(top: 5, leading: 15, bottom: 5, trailing: 15))
+    }
+}

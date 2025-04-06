@@ -12,13 +12,7 @@ import CoreData
 struct HomeScreen: View {
     @Environment(\.managedObjectContext) private var viewContext
     
-    @FetchRequest(
-            sortDescriptors: [NSSortDescriptor(keyPath: \ListEntity.name, ascending: true)]
-        ) var toDoLists: FetchedResults<ListEntity>
-    
-    @FetchRequest(
-        sortDescriptors: []
-        ) var listItems: FetchedResults<ListItemEntity>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \ListEntity.name, ascending: true)]) var toDoLists: FetchedResults<ListEntity>
     
     @State private var searchTerms: String = ""
     @State private var createListSheetIsPresenting: Bool = false
@@ -31,7 +25,7 @@ struct HomeScreen: View {
                     Color.tasklystBackground
                         .ignoresSafeArea()
                     VStack {
-                        TLHeaderView(contentWidth: geometryReader.size.width)
+                        TLHomescreenHeaderView(contentWidth: geometryReader.size.width)
                         TLSearchBarView(searchTerms: $searchTerms, contentWidth: geometryReader.size.width, contentHeight: geometryReader.size.height)
                         TLListSectionView(toDoLists: toDoLists, searchTerms: $searchTerms)
                         Spacer()

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TLHeaderView: View {
+struct TLHomescreenHeaderView: View {
     var title: String = "tasklyst"
     var contentWidth: CGFloat = 393
     
@@ -22,5 +22,5 @@ struct TLHeaderView: View {
 }
 
 #Preview {
-    TLHeaderView()
+    TLHomescreenHeaderView()
 }
