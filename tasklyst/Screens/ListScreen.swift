@@ -34,53 +34,7 @@ struct ListScreen: View {
             }
             .toolbar {
                 ToolbarItemGroup(placement: .navigationBarTrailing) {
-                    if let dueDate = list.dueDate {
-                        Button {
-                            showDatePicker.toggle()
-                        } label: {
-                            HStack (spacing: 0) {
-                                TLTextView(text: "Due:  ")
-                                Text(dueDate, style: .date)
-                                    .font(.system(size: 12, weight: .semibold))
-                                    .foregroundStyle(Color.tasklystAccent)
-                            }
-                        }
-                        .popover(isPresented: $showDatePicker, attachmentAnchor: .point(.trailing)) {
-                            VStack (spacing: 0) {
-                                HStack {
-                                    Spacer()
-                                    Button("Remove Date") {
-                                        list.dueDate = nil
-                                        showDatePicker = false
-                                    }
-                                    .foregroundColor(.red)
-                                    .padding(.trailing, 15)
-                                    .padding(.top, 25)
-                                }
-                                DatePicker(
-                                    "Select Date",
-                                    selection: Binding(
-                                        get: { list.dueDate ?? Date() },
-                                        set: { newDate in list.dueDate = newDate }
-                                    ),
-                                    displayedComponents: .date
-                                )
-                                .datePickerStyle(.graphical)
-                                .padding()
-                            }
-                            .presentationDetents([.height(400)])
-                            .presentationDragIndicator(.automatic)
-                        }
-                    } else {
-                        Button {
-                            list.dueDate = Date()
-                            showDatePicker.toggle()
-                        } label: {
-                            Text("Add Due Date")
-                                .font(.system(size: 12))
-                                .foregroundStyle(Color.tasklystAccent)
-                        }
-                    }
+                    TLDueDateButtonView(list: list, showDatePicker: $showDatePicker)
                 }
                 
                 ToolbarItemGroup(placement: .keyboard) {
@@ -91,7 +45,6 @@ struct ListScreen: View {
                 }
             }
         }
-
         .onDisappear {
             do {
                 try viewContext.save()
