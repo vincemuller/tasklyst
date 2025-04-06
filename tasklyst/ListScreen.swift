@@ -22,52 +22,6 @@ struct ListScreen: View {
             ZStack {
                 Color.tasklystBackground
                     .ignoresSafeArea()
-                    .toolbar(content: {
-                        if let dueDate = list.dueDate {
-                            Button {
-                                showDatePicker.toggle()
-                            } label: {
-                                Text(dueDate, style: .date) // Display date in a compact format
-                                    .font(.system(size: 12)) // Match the Menu text size
-                                    .foregroundStyle(Color.tasklystAccent)
-                            }
-                            .popover(isPresented: $showDatePicker, attachmentAnchor: .point(.trailing)) {
-                                VStack (spacing: 0) {
-                                    HStack {
-                                        Spacer()
-                                        Button("Remove Date") {
-                                            list.dueDate = nil
-                                            showDatePicker = false
-                                        }
-                                        .foregroundColor(.red)
-                                        .padding(.trailing, 15)
-                                        .padding(.top, 25)
-                                    }
-                                    DatePicker(
-                                        "Select Date",
-                                        selection: Binding(
-                                            get: { list.dueDate ?? Date() },
-                                            set: { newDate in list.dueDate = newDate }
-                                        ),
-                                        displayedComponents: .date
-                                    )
-                                    .datePickerStyle(.graphical) // Optional: Use a graphical calendar
-                                    .padding()
-                                }
-                                .presentationDetents([.height(400)])
-                                .presentationDragIndicator(.automatic)
-                            }
-                        } else {
-                            Button {
-                                list.dueDate = Date()
-                                showDatePicker.toggle()
-                            } label: {
-                                Text("Add Due Date")
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(Color.tasklystAccent)
-                            }
-                        }
-                    })
                 VStack {
                     TextEditor(text: Binding(
                         get: { list.name ?? "" },
@@ -92,9 +46,7 @@ struct ListScreen: View {
                             }
                         } label: {
                             HStack(spacing: 5) {
-                                Text(selectedSort.label)
-                                    .font(.system(size: 12))
-                                    .foregroundStyle(Color.tasklystAccent)
+                                TLTextView(text: selectedSort.label)
                                 Image(systemName: "arrow.up.and.down")
                                     .foregroundStyle(Color.tasklystAccent)
                             }
@@ -106,18 +58,18 @@ struct ListScreen: View {
                             ForEach(list.listItemsArray.filter{$0.list?.id == list.id}, id: \.self) {item in
                                 switch selectedSort {
                                 case .all:
-                                    ListItemView(item: item)
+                                    TLListItemView(item: item)
                                         .listRowBackground(Color.clear)
                                         .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
                                 case .incomplete:
                                     if !item.completed {
-                                        ListItemView(item: item)
+                                        TLListItemView(item: item)
                                             .listRowBackground(Color.clear)
                                             .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
                                     }
                                 case .completed:
                                     if item.completed {
-                                        ListItemView(item: item)
+                                        TLListItemView(item: item)
                                             .listRowBackground(Color.clear)
                                             .listRowInsets(.init(top: 5, leading: 10, bottom: 5, trailing: 0))
                                     }
@@ -129,17 +81,60 @@ struct ListScreen: View {
                     }
                     .frame(width: 350, alignment: .leading)
                     Spacer()
-                    Button {
-                        createNewListItem()
-                    } label: {
-                        Image(systemName: "plus.circle")
-                            .foregroundStyle(.tasklystAccent)
-                            .font(.system(size: 40, weight: .semibold))
-                    }
-                    .padding(.top)
+                    TLPlusCircleView(createFunction: create)
                 }
             }
             .toolbar {
+                ToolbarItemGroup(placement: .navigationBarTrailing) {
+                    if let dueDate = list.dueDate {
+                        Button {
+                            showDatePicker.toggle()
+                        } label: {
+                            HStack (spacing: 0) {
+                                TLTextView(text: "Due:  ")
+                                Text(dueDate, style: .date)
+                                    .font(.system(size: 12, weight: .semibold))
+                                    .foregroundStyle(Color.tasklystAccent)
+                            }
+                        }
+                        .popover(isPresented: $showDatePicker, attachmentAnchor: .point(.trailing)) {
+                            VStack (spacing: 0) {
+                                HStack {
+                                    Spacer()
+                                    Button("Remove Date") {
+                                        list.dueDate = nil
+                                        showDatePicker = false
+                                    }
+                                    .foregroundColor(.red)
+                                    .padding(.trailing, 15)
+                                    .padding(.top, 25)
+                                }
+                                DatePicker(
+                                    "Select Date",
+                                    selection: Binding(
+                                        get: { list.dueDate ?? Date() },
+                                        set: { newDate in list.dueDate = newDate }
+                                    ),
+                                    displayedComponents: .date
+                                )
+                                .datePickerStyle(.graphical)
+                                .padding()
+                            }
+                            .presentationDetents([.height(400)])
+                            .presentationDragIndicator(.automatic)
+                        }
+                    } else {
+                        Button {
+                            list.dueDate = Date()
+                            showDatePicker.toggle()
+                        } label: {
+                            Text("Add Due Date")
+                                .font(.system(size: 12))
+                                .foregroundStyle(Color.tasklystAccent)
+                        }
+                    }
+                }
+                
                 ToolbarItemGroup(placement: .keyboard) {
                     Spacer()
                     Button("Done") {
@@ -158,10 +153,6 @@ struct ListScreen: View {
         }
     }
     
-    private func createNewListItem() {
-        ListItemEntity.create(in: viewContext, description: "", completed: false, list: list)
-    }
-    
     private func delete(at offsets: IndexSet) {
         for index in offsets {
             let listItem = list.listItemsArray[index]
@@ -174,50 +165,12 @@ struct ListScreen: View {
         }
     }
     
+    private func create() {
+        ListItemEntity.create(in: viewContext, description: "", completed: false, list: list)
+    }
+    
 }
 
 #Preview {
     ListScreen(list: ListEntity())
-}
-
-struct ListItemView: View {
-    
-    @ObservedObject var item: ListItemEntity
-    @FocusState var isFocused: Bool
-    
-    var body: some View {
-        HStack {
-            TextEditor(text: Binding(
-                get: { item.itemDescription ?? "" },
-                set: { newValue in item.itemDescription = newValue }
-            ))
-                .foregroundStyle(item.completed ? Color.tasklystForeground.opacity(0.3) : Color.tasklystForeground)
-                .font(.system(size: 14))
-                .focused($isFocused)
-                
-            Spacer()
-            Button {
-                withAnimation(.easeOut) {
-                    item.completed.toggle()
-                }
-            } label: {
-                ZStack {
-                    Circle()
-                        .stroke(item.completed ? .tasklystForeground.opacity(0.3) : .tasklystForeground, lineWidth: 2)
-                        .frame(width: 18, height: 18)
-                        .padding(.trailing, 5)
-                    item.completed ?
-                    Image(systemName: "checkmark")
-                        .offset(x: -2, y: -3)
-                        .foregroundStyle(.green) :
-                    nil
-                }
-            }
-        }
-        .onAppear {
-            if (item.itemDescription == "") {
-                isFocused = true
-            }
-        }
-    }
 }
