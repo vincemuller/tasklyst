@@ -13,9 +13,9 @@ struct ListScreen: View {
     
     @ObservedObject var list: ListEntity
     
-    @FocusState var isFocused: Bool
-    @State var selectedSort: StatusSort = .all
-    @State var showDatePicker: Bool = false
+    @FocusState private var isFocused: Bool
+    @State private var selectedSort: StatusSort = .all
+    @State private var showDatePicker: Bool = false
     
     var body: some View {
         NavigationStack {
