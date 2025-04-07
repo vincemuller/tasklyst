@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		EB4ACAA22DA497370031D35E /* TLFigmaDesigns.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		EB4ACA9A2DA32F6B0031D35E /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -19,6 +23,7 @@
 /* Begin PBXFileReference section */
 		EB1FD29B2D9B26970045586C /* tasklyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasklyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB4ACA962DA32F6A0031D35E /* tasklystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tasklystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TLFigmaDesigns.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -55,6 +60,7 @@
 		EB1FD2922D9B26970045586C = {
 			isa = PBXGroup;
 			children = (
+				EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */,
 				EB1FD29D2D9B26970045586C /* tasklyst */,
 				EB4ACA972DA32F6A0031D35E /* tasklystTests */,
 				EB1FD29C2D9B26970045586C /* Products */,
@@ -164,6 +170,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4ACAA22DA497370031D35E /* TLFigmaDesigns.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
