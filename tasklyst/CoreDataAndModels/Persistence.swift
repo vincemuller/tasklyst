@@ -14,8 +14,11 @@ struct PersistenceController {
 
     let container: NSPersistentContainer
 
-    init() {
+    init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "TasklystModel")
+        if inMemory {
+            container.persistentStoreDescriptions.first!.url = URL(fileURLWithPath: "/dev/null")
+        }
         container.loadPersistentStores { _, error in
             if let error = error {
                 fatalError("Core Data failed: \(error.localizedDescription)")

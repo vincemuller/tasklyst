@@ -6,8 +6,19 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXContainerItemProxy section */
+		EB4ACA9A2DA32F6B0031D35E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = EB1FD2932D9B26970045586C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = EB1FD29A2D9B26970045586C;
+			remoteInfo = tasklyst;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		EB1FD29B2D9B26970045586C /* tasklyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasklyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		EB4ACA962DA32F6A0031D35E /* tasklystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tasklystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +27,22 @@
 			path = tasklyst;
 			sourceTree = "<group>";
 		};
+		EB4ACA972DA32F6A0031D35E /* tasklystTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = tasklystTests;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		EB1FD2982D9B26970045586C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB4ACA932DA32F6A0031D35E /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				EB1FD29D2D9B26970045586C /* tasklyst */,
+				EB4ACA972DA32F6A0031D35E /* tasklystTests */,
 				EB1FD29C2D9B26970045586C /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +65,7 @@
 			isa = PBXGroup;
 			children = (
 				EB1FD29B2D9B26970045586C /* tasklyst.app */,
+				EB4ACA962DA32F6A0031D35E /* tasklystTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -70,6 +95,29 @@
 			productReference = EB1FD29B2D9B26970045586C /* tasklyst.app */;
 			productType = "com.apple.product-type.application";
 		};
+		EB4ACA952DA32F6A0031D35E /* tasklystTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EB4ACA9C2DA32F6B0031D35E /* Build configuration list for PBXNativeTarget "tasklystTests" */;
+			buildPhases = (
+				EB4ACA922DA32F6A0031D35E /* Sources */,
+				EB4ACA932DA32F6A0031D35E /* Frameworks */,
+				EB4ACA942DA32F6A0031D35E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				EB4ACA9B2DA32F6B0031D35E /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				EB4ACA972DA32F6A0031D35E /* tasklystTests */,
+			);
+			name = tasklystTests;
+			packageProductDependencies = (
+			);
+			productName = tasklystTests;
+			productReference = EB4ACA962DA32F6A0031D35E /* tasklystTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -82,6 +130,10 @@
 				TargetAttributes = {
 					EB1FD29A2D9B26970045586C = {
 						CreatedOnToolsVersion = 16.2;
+					};
+					EB4ACA952DA32F6A0031D35E = {
+						CreatedOnToolsVersion = 16.2;
+						TestTargetID = EB1FD29A2D9B26970045586C;
 					};
 				};
 			};
@@ -102,12 +154,20 @@
 			projectRoot = "";
 			targets = (
 				EB1FD29A2D9B26970045586C /* tasklyst */,
+				EB4ACA952DA32F6A0031D35E /* tasklystTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		EB1FD2992D9B26970045586C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		EB4ACA942DA32F6A0031D35E /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -124,7 +184,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		EB4ACA922DA32F6A0031D35E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		EB4ACA9B2DA32F6B0031D35E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = EB1FD29A2D9B26970045586C /* tasklyst */;
+			targetProxy = EB4ACA9A2DA32F6B0031D35E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		EB1FD2AC2D9B269A0045586C /* Debug */ = {
@@ -304,6 +379,42 @@
 			};
 			name = Release;
 		};
+		EB4ACA9D2DA32F6B0031D35E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2YSQD8TR77;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Vincent-Muller.tasklystTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tasklyst.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tasklyst";
+			};
+			name = Debug;
+		};
+		EB4ACA9E2DA32F6B0031D35E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2YSQD8TR77;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "Vincent-Muller.tasklystTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/tasklyst.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/tasklyst";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -321,6 +432,15 @@
 			buildConfigurations = (
 				EB1FD2AF2D9B269A0045586C /* Debug */,
 				EB1FD2B02D9B269A0045586C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EB4ACA9C2DA32F6B0031D35E /* Build configuration list for PBXNativeTarget "tasklystTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EB4ACA9D2DA32F6B0031D35E /* Debug */,
+				EB4ACA9E2DA32F6B0031D35E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
