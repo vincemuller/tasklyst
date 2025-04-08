@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		EB4ACAA22DA497370031D35E /* TLFigmaDesigns.png in Resources */ = {isa = PBXBuildFile; fileRef = EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */; };
+		EB4ACAE12DA49FC80031D35E /* screenrecording.mov in Resources */ = {isa = PBXBuildFile; fileRef = EB4ACAE02DA49FC80031D35E /* screenrecording.mov */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,6 +25,7 @@
 		EB1FD29B2D9B26970045586C /* tasklyst.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = tasklyst.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB4ACA962DA32F6A0031D35E /* tasklystTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = tasklystTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TLFigmaDesigns.png; sourceTree = "<group>"; };
+		EB4ACAE02DA49FC80031D35E /* screenrecording.mov */ = {isa = PBXFileReference; lastKnownFileType = video.quicktime; path = screenrecording.mov; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -60,6 +62,7 @@
 		EB1FD2922D9B26970045586C = {
 			isa = PBXGroup;
 			children = (
+				EB4ACAE02DA49FC80031D35E /* screenrecording.mov */,
 				EB4ACAA12DA497370031D35E /* TLFigmaDesigns.png */,
 				EB1FD29D2D9B26970045586C /* tasklyst */,
 				EB4ACA972DA32F6A0031D35E /* tasklystTests */,
@@ -170,6 +173,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB4ACAE12DA49FC80031D35E /* screenrecording.mov in Resources */,
 				EB4ACAA22DA497370031D35E /* TLFigmaDesigns.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
